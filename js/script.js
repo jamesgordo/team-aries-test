@@ -1,12 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const statusDisplay = document.querySelector('#status');
+    const statsDisplay = document.querySelector('#stats');
     const cells = document.querySelectorAll('.cell');
     const restartBtn = document.querySelector('#restart');
 
     const gameState = {
         board: Array(9).fill(null), // null, 'X', 'O'
         currentPlayer: 'X',
-        gameActive: true
+        gameActive: true,
+        gamesPlayed: 0
     };
 
     const WINNING_CONDITIONS = [
@@ -64,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             statusDisplay.innerHTML = winningMessage();
             gameState.gameActive = false;
             highlightWinner(winningLine);
+            updateGamesPlayed();
             return;
         }
 
@@ -71,10 +74,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (roundDraw) {
             statusDisplay.innerHTML = drawMessage();
             gameState.gameActive = false;
+            updateGamesPlayed();
             return;
         }
 
         handlePlayerChange();
+    }
+
+    function updateGamesPlayed() {
+        gameState.gamesPlayed++;
+        statsDisplay.innerText = `Games Played: ${gameState.gamesPlayed}`;
     }
 
     function handlePlayerChange() {
